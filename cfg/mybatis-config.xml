@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 외부 프로퍼티 파일 로드및 공통 프로퍼티 정의 -->
+<!-- 	<properties resource="conf.properties"></properties> -->
+	
+	<!-- 마이바티스의 작동 규칙정의 -->
+	<settings>
+		<!-- 캐시 사용여부 -->
+		<setting name="cacheEnabled" value="true"/>
+		<!-- 다중 결과 집합 허용여부 -->
+		<setting name="multipleResultSetsEnabled" value="true"/>
+		<!-- 생성 키 사용 여부(sequence, identify, auto_increment 등등) -->
+		<setting name="useGeneratedKeys" value="false"/>
+		<!-- 요청이 오래 걸릴 때 자동으로 중지하는 타임아웃 설정(초단위) -->
+ 		<setting name="defaultStatementTimeout" value="120"/>
+		<!-- Java Model 객체는 낙타표기법, DB 컬럼은 언더 바로 표기할 경우 결과 매핑을 자동으로 해주는 옵션(default : false) -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.hopper.dbagent.vo.MessageVO" alias="MessageVO" />
+		<typeAlias type="com.hopper.dbagent.vo.MessageJobVO" alias="MessageJobVO" />
+		<typeAlias type="com.hopper.dbagent.vo.MessageTempVO" alias="MessageTempVO" />
+		<typeAlias type="com.hopper.dbagent.vo.MessageStatsVO" alias="MessageStatsVO" />
+		<typeAlias type="com.hopper.dbagent.vo.MessageTodayStatsVO" alias="MessageTodayStatsVO" />
+	</typeAliases>
+
+	<environments default="oracle">
+		<environment id="oracle">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${userName}" />
+				<property name="password" value="${passWord}" />
+				<property name="poolPingQuery" value="select * from dual" />
+				<property name="poolPingEnabled" value="true" />
+				<property name="poolPingConnectionsNotUsedFor" value="60000" /> 
+			</dataSource>
+		</environment>
+
+		<environment id="hsqldb">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="org.hsqldb.jdbcDriver" />
+				<property name="url" value="${url}"/>
+				<property name="username" value="${userName}" />
+				<property name="password" value="${passWord}" />					
+				<property name="poolPingQuery" value="select * from dual" />
+				<property name="poolPingEnabled" value="true" />
+				<property name="poolPingConnectionsNotUsedFor" value="60000" /> 
+			</dataSource>
+		</environment>
+
+		<environment id="mysql">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="${url}"/>
+				<property name="username" value="${userName}" />
+				<property name="password" value="${passWord}" />					
+				<property name="poolPingQuery" value="select 1 from dual" />
+				<property name="poolPingEnabled" value="true" />
+				<property name="poolPingConnectionsNotUsedFor" value="60000" />
+			</dataSource>
+		</environment>
+
+	</environments>
+
+	<databaseIdProvider type="VENDOR" >
+		<property name="Oracle" value="oracle"/>
+		<property name="Microsoft" value="mssql"/>
+		<property name="MySQL" value="mysql"/>
+		<property name="DB2" value="db2"/>
+		<property name="INFORMIX" value="informix"/>
+		<property name="Sybase" value="sybase"/>
+		<property name="AS400" value="as400"/>
+		<property name="TIBERO" value="tibero"/>
+		<property name="CUBRID" value="cubrid"/>
+		<property name="HSQLDB" value="hsqldb"/>
+	</databaseIdProvider>
+
+	<mappers>
+	</mappers>
+
+</configuration>

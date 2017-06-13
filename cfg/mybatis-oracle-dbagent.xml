@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="oracle">
+
+	  <select id="select_test" resultType="int">
+      SELECT COUNT(*) FROM DUAL
+    </select> 
+
+		<!-- Paging처리에서 사용할 Top 쿼리 -->
+		<sql id="pagingTop">
+			select * from (
+					select
+							row_.*,
+							floor((rownum - 1) / #{limit, jdbcType=NUMERIC} + 1) pageNo
+					from (
+		</sql>
+
+		<!-- Paging처리에서 사용할 Bottom 쿼리 -->
+		<sql id="pagingBottom">
+					) row_
+			)
+			where pageNo = #{pageNo, jdbcType=NUMERIC}
+		</sql>
+
+
+		<update id="create_msg_job_table">
+			CREATE TABLE BR_MSG_JOB
+			(
+			 JOB_KEY                  VARCHAR2(30)  NOT NULL  -- 잡 키
+			,JOB_NAME               	VARCHAR2(200) NOT NULL  -- 잡 이름
+			,CALLBACK 								VARCHAR2(20)  NOT NULL  -- 회신번호(발신번호)
+			,REG_DATE              		DATE          NOT NULL  -- 등록시간
+			,SEND_DATE                DATE          NOT NULL  -- 메세지 전송시간 (즉시전송, 예약전송)
+			,RESV_YN 									CHAR(1) 			NOT NULL  -- 예약전송 여부 (Y : 예약전송, N : 즉시전송)
+			,MSG_TYPE                	VARCHAR2(3)   NOT NULL  -- 메세지 타입(SMS, LMS, MMS)
+			,TOTAL_CNT          			NUMBER(10)    NOT NULL  -- 총 메세지 수
+			,SEND_CNT									NUMBER(10)		DEFAULT 0 -- 전송중 메세지
+			,RSLT_SUCC_CNT    				NUMBER(10)    DEFAULT 0 -- REPORT SUCCESS
+			,RSLT_FAIL_CNT           	NUMBER(10)    DEFAULT 0 -- REPORT FAIL or SENT FAIL
+			,CONSTRAINT MSG_JOB_PK primary key(JOB_KEY)
+			)
+		</update>
+
+		<update id="create_msg_data_table">
+			CREATE TABLE BR_MSG_DATA
+			(
+			 MSG_KEY                   NUMBER(11)          	 NOT NULL
+			,CALLBACK                  VARCHAR2(16)          NOT NULL
+			,PHONE                     VARCHAR2(16)          NOT NULL
+			,MSG_TYPE                  CHAR(3)               NOT NULL
+			,STATUS                    NUMBER(1)             NOT NULL
+			,SEND_DATE                 DATE                  NOT NULL
+			,RESV_YN									 CHAR(1)							 NOT NULL
+			,JOB_KEY               		 VARCHAR2(30)
+			,DONE_DATE                 DATE
+			,PHONE_DATE                DATE
+			,REPORT_DATE               DATE
+			,RSLT_CODE                 CHAR(1)
+			,RSLT_DATA                 VARCHAR2(100)
+			,NET_CODE                  CHAR(1)
+			,SUBJECT                   VARCHAR2(120)
+			,TEXT                      VARCHAR2(4000)
+			,FILE_NAME_1               VARCHAR2(1024)
+			,FILE_TYPE_1               VARCHAR2(3)
+			,FILE_NAME_2               VARCHAR2(1024)
+			,FILE_TYPE_2               VARCHAR2(3)
+			,FILE_NAME_3               VARCHAR2(1024)
+			,FILE_TYPE_3               VARCHAR2(3)
+			,CONSTRAINT BR_MSG_DATA_PK PRIMARY KEY (MSG_KEY)
+			)
+	</update>
+
+	<update id="create_msg_table_seq">
+		CREATE SEQUENCE BR_MSG_DATA_SEQ INCREMENT BY 1 START WITH 1
+  </update>
+
+	<update id="create_msg_log_table" parameterType="Map">
+		CREATE TABLE BR_MSG_DATA_LOG_${logTableName}
+		(
+		 MSG_KEY                   NUMBER(11)            NOT NULL
+		,JOB_KEY               		 VARCHAR2(30)
+		,CALLBACK                  VARCHAR2(16)          NOT NULL
+		,PHONE                     VARCHAR2(16)          NOT NULL
+		,MSG_TYPE                  CHAR(3)               NOT NULL
+		,STATUS                    NUMBER(1)             NOT NULL
+		,SEND_DATE                 DATE                  NOT NULL
+		,RESV_YN									 CHAR(1)							 NOT NULL
+		,DONE_DATE                 DATE
+		,PHONE_DATE                DATE
+		,REPORT_DATE               DATE
+		,RSLT_CODE                 CHAR(1)
+		,RSLT_DATA                 VARCHAR2(100)
+		,NET_CODE                  CHAR(1)
+		,SUBJECT                   VARCHAR2(120)
+		,TEXT                      VARCHAR2(4000)
+		,FILE_NAME_1               VARCHAR2(1024)
+		,FILE_TYPE_1               VARCHAR2(3)
+		,FILE_NAME_2               VARCHAR2(1024)
+		,FILE_TYPE_2               VARCHAR2(3)
+		,FILE_NAME_3               VARCHAR2(1024)
+		,FILE_TYPE_3               VARCHAR2(3)
+		)
+	</update>
+
+	<!--통계테이블-->
+	<update id="create_msg_stats">
+		CREATE TABLE BR_MSG_STATS (
+			YYYY								CHAR(4)   		NOT NULL					-- 년
+		 ,MM									CHAR(2)   		NOT NULL					-- 월
+		 ,DD									CHAR(2)   		NOT NULL					-- 일
+		 ,MSG_TYPE						VARCHAR2(3)		NOT NULL					-- SMS, LMS, MMS
+		 ,SUCC_CNT 						NUMBER(10)		DEFAULT	 0				-- 메세지 전송 성공 건
+		 ,TOUT_FAIL_CNT				NUMBER(10)		DEFAULT	 0				-- TIMEOUT 실패 (REPORT)
+		 ,INVA_FAIL_CNT				NUMBER(10)  	DEFAULT  0				-- INVALID 실패 (REPORT)
+		 ,SENT_FAIL_CNT  			NUMBER(10)  	DEFAULT  0				-- SEND 실패		 (SENT)
+		 ,TOTAL_CNT						NUMBER(10)		DEFAULT  0				-- 총 발송건수
+		)
+	</update>
+
+	<select id="select_msg" resultType="MessageVO" parameterType="Map">
+		SELECT
+			 MSG_KEY 							as msgKey
+			,JOB_KEY 							as jobKey
+			,CALLBACK   					as callback
+			,PHONE 								as phone
+			,MSG_TYPE							as msgType
+			,STATUS 							as status
+			,SEND_DATE 						as sendDate
+			,RESV_YN							as resvYN
+			,DONE_DATE 						as doneDate
+			,PHONE_DATE 					as phoneDate
+			,REPORT_DATE 					as reportDate
+			,RSLT_CODE 						as rsltCode
+			,NET_CODE 						as netCode
+			,SUBJECT 							as subject
+			,TEXT 								as text
+			,FILE_NAME_1 					as fileName1
+			,FILE_TYPE_1					as fileType1
+			,FILE_NAME_2 					as fileName2
+			,FILE_TYPE_2					as fileType2
+			,FILE_NAME_3 					as fileName3
+			,FILE_TYPE_3					as fileType3
+		FROM BR_MSG_DATA
+		<![CDATA[
+				WHERE STATUS = #{status} AND SEND_DATE <= #{sendDate} AND ROWNUM < #{rownum}
+		]]>
+	</select>
+
+	<update id="update_msg_sent" parameterType="MessageVO">
+		UPDATE BR_MSG_DATA SET
+		  DONE_DATE 	= #{doneDate}
+		 ,STATUS			= #{status}
+		WHERE MSG_KEY	= #{msgKey}
+	</update>
+
+	<update id="update_msg_sent_fail" parameterType="MessageVO">
+		UPDATE BR_MSG_DATA SET
+		  DONE_DATE 	= #{doneDate}
+		 ,RSLT_CODE	= #{rsltCode}
+		 ,RSLT_DATA	= #{rsltData}
+		 ,STATUS			= #{status}
+		WHERE MSG_KEY	= #{msgKey}
+	</update>
+
+	<update id="update_msg_report" parameterType="MessageVO">
+		UPDATE BR_MSG_DATA SET
+		  PHONE_DATE		= #{phoneDate}
+		 ,REPORT_DATE	= #{reportDate}
+		 ,NET_CODE			= #{netCode}
+		 ,RSLT_CODE		= #{rsltCode}
+		 ,RSLT_DATA		= #{rsltData}
+		 ,STATUS				= #{status}
+		WHERE MSG_KEY		= #{msgKey}
+	</update>
+
+
+	<update id="insert_msg" parameterType="MessageVO">
+			INSERT INTO BR_MSG_DATA (MSG_KEY, SEND_DATE, PHONE, CALLBACK, TEXT, MSG_TYPE, STATUS) VALUES
+					(BR_MSG_DATA_SEQ.nextval, #{sendDate}, #{phone}, #{callback}, #{text}, #{msgType}, 1)
+	</update>
+
+
+	<select id="select_move_msg" resultType="map" parameterType="map">
+			SELECT
+			  MSG_KEY 						as msgKey
+			 ,JOB_KEY 						as jobKey
+			 ,CALLBACK   					as callback
+			 ,PHONE 							as phone
+			 ,MSG_TYPE						as msgType
+			 ,STATUS 							as status
+			 ,SEND_DATE 					as sendDate
+			 ,RESV_YN							as resvYN
+			 ,DONE_DATE 					as doneDate
+			 ,PHONE_DATE 					as phoneDate
+			 ,REPORT_DATE 				as reportDate
+			 ,RSLT_CODE 					as rsltCode
+			 ,RSLT_DATA						as rsltData
+			 ,NET_CODE 						as netCode
+			 ,SUBJECT 						as subject
+			 ,TEXT 								as text
+			 ,FILE_NAME_1 				as fileName1
+			 ,FILE_TYPE_1					as fileType1
+			 ,FILE_NAME_2 				as fileName2
+			 ,FILE_TYPE_2					as fileType2
+			 ,FILE_NAME_3 				as fileName3
+			 ,FILE_TYPE_3					as fileType3
+			FROM BR_MSG_DATA
+			<![CDATA[
+					WHERE STATUS = #{status} AND SEND_DATE < #{moveDate} AND ROWNUM < #{rownum}
+			]]>
+	</select>
+
+	<insert id="insert_msg_log" parameterType="map" >
+			INSERT INTO BR_MSG_DATA_LOG_${logTableName}
+					(
+					 MSG_KEY
+					,JOB_KEY
+					,CALLBACK
+					,PHONE
+					,MSG_TYPE
+					,STATUS
+					,SEND_DATE
+					,RESV_YN
+					,DONE_DATE
+					,PHONE_DATE
+					,REPORT_DATE
+					,RSLT_CODE
+					,RSLT_DATA
+					,NET_CODE
+					,SUBJECT
+					,TEXT
+					,FILE_NAME_1
+					,FILE_TYPE_1
+					,FILE_NAME_2
+					,FILE_TYPE_2
+					,FILE_NAME_3
+					,FILE_TYPE_3
+					)
+			VALUES
+					(
+					 #{MSGKEY}
+					,#{JOBKEY, 					jdbcType=VARCHAR}
+					,#{CALLBACK, 				jdbcType=VARCHAR}
+					,#{PHONE, 					jdbcType=VARCHAR}
+					,#{MSGTYPE, 				jdbcType=INTEGER}
+					,#{STATUS, 					jdbcType=INTEGER}
+					,#{SENDDATE, 				jdbcType=DATE}
+					,#{RESVYN, 					jdbcType=VARCHAR}
+					,#{DONEDATE, 				jdbcType=DATE}
+					,#{PHONEDATE, 			jdbcType=DATE}
+					,#{REPORTDATE, 			jdbcType=DATE}
+					,#{RSLTCODE, 				jdbcType=VARCHAR}
+					,#{RSLTDATA, 				jdbcType=VARCHAR}
+					,#{NETCODE, 				jdbcType=VARCHAR}
+					,#{SUBJECT, 				jdbcType=VARCHAR}
+					,#{TEXT, 						jdbcType=VARCHAR}
+					,#{FILENAME1, 			jdbcType=VARCHAR}
+					,#{FILETYPE1, 			jdbcType=VARCHAR}
+					,#{FILENAME2, 			jdbcType=VARCHAR}
+					,#{FILETYPE2, 			jdbcType=VARCHAR}
+					,#{FILENAME3, 			jdbcType=VARCHAR}
+					,#{FILETYPE3, 			jdbcType=VARCHAR}
+					)
+	</insert>
+
+	<update id="delete_msg" parameterType="int">
+			DELETE FROM BR_MSG_DATA WHERE MSG_KEY = #{MSGKEY}
+	</update>
+
+
+
+		<!--Msg Job -->
+
+		<select id="select_msg_job_total_count" resultType="int" parameterType="map">
+				SELECT
+						COUNT(JOB_KEY)
+				FROM
+						BR_MSG_JOB
+				<where>
+						<if test = 'beginSendDate != null and beginSendDate != "" and endSendDate != null and endSendDate != ""'>
+						  <![CDATA[
+                  (   SEND_DATE >= TO_DATE(#{beginSendDate}, 'YYYYMMDD') 
+                  AND 
+                  SEND_DATE < TO_DATE(#{endSendDate},  'YYYYMMDD') + 1 )
+							]]>
+						</if>
+
+						<if test = 'callback != null and callback != "" '>
+							AND	CALLBACK = #{callback, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'jobKey != null and jobKey != "" '>
+							AND	JOB_KEY = #{jobKey, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'msgType != null and msgType != "" '>
+							AND	MSG_TYPE = #{msgType, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'resvYN != null and resvYN != "" '>
+							AND	RESV_YN = #{resvYN, jdbcType=VARCHAR}
+						</if>
+				</where>
+
+		</select>
+		<select id="select_msg_job" resultType="MessageJobVO" parameterType="map">
+			<include refid="pagingTop"/>
+				SELECT
+					JOB_KEY
+				 ,JOB_NAME
+				 ,REG_DATE
+				 ,CALLBACK
+				 ,SEND_DATE
+				 ,RESV_YN
+				 ,MSG_TYPE
+				 ,TOTAL_CNT
+				 ,SEND_CNT
+				 ,RSLT_SUCC_CNT
+				 ,RSLT_FAIL_CNT
+				FROM
+						BR_MSG_JOB
+				<where>
+						<if test = 'beginSendDate != null and beginSendDate != "" and endSendDate != null and endSendDate != ""'>
+							<![CDATA[
+                  (   SEND_DATE >= TO_DATE(#{beginSendDate}, 'YYYYMMDD') 
+                  AND 
+                  SEND_DATE < TO_DATE(#{endSendDate},  'YYYYMMDD') + 1 )
+							]]>
+						</if>
+
+						<if test = 'callback != null and callback != "" '>
+							AND	CALLBACK = #{callback, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'jobKey != null and jobKey != "" '>
+							AND	JOB_KEY = #{jobKey, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'msgType != null and msgType != "" '>
+							AND	MSG_TYPE = #{msgType, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'resvYN != null and resvYN != "" '>
+							AND	RESV_YN = #{resvYN, jdbcType=VARCHAR}
+						</if>
+				</where>
+
+				ORDER BY REG_DATE DESC
+			<include refid="pagingBottom" />
+
+		</select>
+
+
+		<!-- Msg Job Detail List (Job의 메세지 List조회)-->
+		<select id="select_msg_job_data_list_cnt" resultType="int" parameterType="map">
+			SELECT SUM(cnt) as msgCnt  FROM (
+				SELECT
+						COUNT(JOB_KEY) as cnt
+				FROM
+						BR_MSG_DATA_LOG_${yyyymm}
+				<where>
+						<if test = 'jobKey != null and jobKey != "" '>
+							JOB_KEY = #{jobKey, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'phone != null and phone != "" '>
+							AND	PHONE = #{phone, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'rsltCode != null and rsltCode != "" '>
+							AND	RSLT_CODE = #{rsltCode, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'status != null and status != "" '>
+							AND	STATUS = #{status, jdbcType=INTEGER}
+						</if>
+				</where>
+
+				UNION ALL
+
+				SELECT
+						COUNT(JOB_KEY)  as cnt
+				FROM
+						BR_MSG_DATA
+				<where>
+						<if test = 'jobKey != null and jobKey != "" '>
+							JOB_KEY = #{jobKey, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'phone != null and phone != "" '>
+							AND	PHONE = #{phone, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'rsltCode != null and rsltCode != "" '>
+							AND	RSLT_CODE = #{rsltCode, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'status != null and status != "" '>
+							AND	STATUS = #{status, jdbcType=INTEGER}
+						</if>
+				</where>
+			)
+		</select>
+
+		<select id="select_msg_job_data_list" resultType="MessageVO" parameterType="map">
+			<include refid="pagingTop"/>
+				SELECT
+				  CALLBACK
+				 ,PHONE
+				 ,MSG_TYPE
+				 ,STATUS
+				 ,RESV_YN
+				 ,SEND_DATE
+				 ,DONE_DATE
+				 ,PHONE_DATE
+				 ,REPORT_DATE
+				 ,RSLT_CODE
+				 ,RSLT_DATA
+				 ,NET_CODE
+				 ,TEXT
+				FROM
+					BR_MSG_DATA_LOG_${yyyymm}
+			<where>
+						<if test = 'jobKey != null and jobKey != "" '>
+							JOB_KEY = #{jobKey, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'phone != null and phone != "" '>
+							AND	PHONE = #{phone, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'rsltCode != null and rsltCode != "" '>
+							AND	RSLT_CODE = #{rsltCode, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'status != null and status != "" '>
+							AND	STATUS = #{status, jdbcType=INTEGER}
+						</if>
+			</where>
+
+			UNION ALL
+
+			SELECT
+				  CALLBACK
+				 ,PHONE
+				 ,MSG_TYPE
+				 ,STATUS
+				 ,RESV_YN
+				 ,SEND_DATE
+				 ,DONE_DATE
+				 ,PHONE_DATE
+				 ,REPORT_DATE
+				 ,RSLT_CODE
+				 ,RSLT_DATA
+				 ,NET_CODE
+				 ,TEXT
+				FROM
+					BR_MSG_DATA
+			<where>
+						<if test = 'jobKey != null and jobKey != "" '>
+							JOB_KEY = #{jobKey, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'phone != null and phone != "" '>
+							AND	PHONE = #{phone, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'rsltCode != null and rsltCode != "" '>
+							AND	RSLT_CODE = #{rsltCode, jdbcType=VARCHAR}
+						</if>
+
+						<if test = 'status != null and status != "" '>
+							AND	STATUS = #{status, jdbcType=INTEGER}
+						</if>
+			</where>
+			<include refid="pagingBottom" />
+		</select>
+
+
+
+		<!-- Msg Data List 조회 (일반전송 메세지 + 엑셀전송 메세지)-->
+
+		<select id="select_msg_data_list_cnt" resultType="int" parameterType="Map">
+				SELECT
+						COUNT(MSG_KEY)
+				FROM
+						BR_MSG_DATA_LOG_${yyyymm}
+				<where>
+					<if test = 'beginSendDate != null and beginSendDate != "" and endSendDate != null and endSendDate != ""'>
+						<![CDATA[
+                  (   SEND_DATE >= TO_DATE(#{beginSendDate}, 'YYYYMMDD') 
+                  AND 
+                  SEND_DATE < TO_DATE(#{endSendDate},  'YYYYMMDD') + 1 )
+						]]>	
+					</if>
+
+					<if test = 'phone != null and phone != "" '>
+						AND	PHONE = #{phone, jdbcType=VARCHAR}
+					</if>
+
+					<if test = 'callback != null and callback != "" '>
+						AND	CALLBACK = #{callback, jdbcType=VARCHAR}
+					</if>
+
+					<if test = 'msgKey != null and msgKey != "" '>
+						AND	MSG_KEY = #{msgKey, jdbcType=VARCHAR}
+					</if>
+
+					<if test = 'msgType != null and msgType != "" '>
+						AND	MSG_TYPE = #{msgType, jdbcType=VARCHAR}
+					</if>
+
+					<if test = 'resvYN != null and resvYN != "" '>
+						AND	RESV_YN = #{resvYN, jdbcType=VARCHAR}
+					</if>
+
+					<if test = 'status != null and status != "" '>
+						AND	STATUS = #{status}
+					</if>
+
+					<if test = 'rsltCode != null and rsltCode != "" '>
+						AND	RSLT_CODE = #{rsltCode}
+					</if>
+				</where>
+		</select>
+
+		<select id="select_msg_data_list" resultType="MessageVO" parameterType="map">
+			<include refid="pagingTop"/>
+				SELECT
+					MSG_KEY
+				 ,CALLBACK
+				 ,PHONE
+				 ,MSG_TYPE
+				 ,STATUS
+				 ,RESV_YN
+				 ,SEND_DATE
+				 ,DONE_DATE
+				 ,PHONE_DATE
+				 ,REPORT_DATE
+				 ,RSLT_CODE
+				 ,NET_CODE
+				 ,TEXT
+				FROM
+					BR_MSG_DATA_LOG_${yyyymm}
+			<where>
+				<if test = 'beginSendDate != null and beginSendDate != "" and endSendDate != null and endSendDate != "" ' >
+					<![CDATA[
+                  (   SEND_DATE >= TO_DATE(#{beginSendDate}, 'YYYYMMDD') 
+                  AND 
+                  SEND_DATE < TO_DATE(#{endSendDate},  'YYYYMMDD') + 1 )
+					]]>
+				</if>
+
+				<if test = 'phone != null and phone != "" '>
+					AND	PHONE = #{phone, jdbcType=VARCHAR}
+				</if>
+
+				<if test = 'callback != null and callback != "" '>
+					AND	CALLBACK = #{callback, jdbcType=VARCHAR}
+				</if>
+
+				<if test = 'msgKey != null and msgKey != "" '>
+					AND	MSG_KEY = #{msgKey, jdbcType=VARCHAR}
+				</if>
+
+				<if test = 'msgType != null and msgType != "" '>
+					AND	MSG_TYPE = #{msgType, jdbcType=VARCHAR}
+				</if>
+
+				<if test = 'resvYN != null and resvYN != "" '>
+					AND	RESV_YN = #{resvYN, jdbcType=VARCHAR}
+				</if>
+
+				<if test = 'status != null and status != "" '>
+					AND	STATUS = #{status}
+				</if>
+
+				<if test = 'rsltCode != null and rsltCode != "" '>
+					AND	RSLT_CODE = #{rsltCode}
+				</if>
+
+			</where>
+			<include refid="pagingBottom" />
+		</select>
+
+
+
+		<select id="select_msg_data_today_succ_fail" parameterType="map" resultType="MessageTodayStatsVO">
+			SELECT 
+				msg_type ,
+				SUM(DECODE(rslt_code, '0', 0, 1)) fail_cnt, 
+				SUM(DECODE(rslt_code, '0', 1, 0)) succ_cnt
+			FROM 
+				br_msg_data_log_${yyyymm}
+			WHERE 
+				TO_CHAR(send_date, 'YYYYMMDD') = TO_CHAR(#{now, jdbcType=DATE}, 'YYYYMMDD')
+			GROUP BY
+				msg_type
+		</select>
+
+
+		<select id="select_msg_data_today_ready" parameterType="map" resultType="MessageTodayStatsVO">
+			SELECT 
+				msg_type, 
+				COUNT(msg_key) ready_cnt
+			FROM 
+				br_msg_data
+			WHERE
+			<![CDATA[
+				status = 1 AND TO_CHAR(send_date, 'YYYYMMDDHH24MI') > TO_CHAR(#{now, jdbcType=DATE}, 'YYYYMMDDHH24MI')
+			]]>	
+			GROUP BY
+				msg_type
+		</select>
+
+
+		
+		<select id="is_exist_msg_job_table" resultType="int">
+				SELECT 1 FROM BR_MSG_JOB
+				WHERE ROWNUM = 1
+		</select>
+
+
+		<insert id="insert_msg_job" parameterType="map">
+				INSERT INTO BR_MSG_JOB
+						(
+						 JOB_KEY
+						,JOB_NAME
+						,CALLBACK
+						,REG_DATE
+						,SEND_DATE
+						,RESV_YN
+						,MSG_TYPE
+						,TOTAL_CNT
+						)
+				VALUES
+						(
+						 #{jobKey}
+						,#{jobName}
+						,#{callback}
+						,#{regDate}
+						,#{sendDate}
+						,#{resvYN}
+						,#{msgType}
+						,#{totalCnt}
+						)
+		</insert>
+
+		<update id="update_msg_job" parameterType="MessageJobVO">
+				UPDATE BR_MSG_JOB
+					SET 
+					 RSLT_FAIL_CNT = RSLT_FAIL_CNT + #{rsltFailCnt}
+					,RSLT_SUCC_CNT = RSLT_SUCC_CNT + #{rsltSuccCnt}
+					,SEND_CNT = SEND_CNT + #{sendCnt}
+				WHERE JOB_KEY = #{jobKey}
+		</update>
+
+		<insert id="insert_msg_data" parameterType="MessageTempVO">
+				INSERT INTO BR_MSG_DATA
+						(
+						 MSG_KEY
+						,JOB_KEY
+						,CALLBACK
+						,PHONE
+						,MSG_TYPE
+						,STATUS
+						,SEND_DATE
+						,RESV_YN
+						,SUBJECT
+						,TEXT
+						,FILE_NAME_1
+						,FILE_TYPE_1
+						,FILE_NAME_2
+						,FILE_TYPE_2
+						,FILE_NAME_3
+						,FILE_TYPE_3
+						)
+				VALUES
+						(
+						 BR_MSG_DATA_SEQ.NEXTVAL
+						,#{jobKey, 					jdbcType=VARCHAR}
+						,#{callback, 				jdbcType=VARCHAR}
+						,#{phone, 					jdbcType=VARCHAR}
+						,#{msgType, 				jdbcType=VARCHAR}
+						,#{status, 					jdbcType=INTEGER}
+						,#{sendDate}
+						,#{resvYN, 					jdbcType=VARCHAR}
+						,#{subject , 				jdbcType=VARCHAR}
+						,#{text , 					jdbcType=VARCHAR}
+						,#{fileName1 , 			jdbcType=VARCHAR}
+						,#{fileType1 , 			jdbcType=VARCHAR}
+						,#{fileName2 , 			jdbcType=VARCHAR}
+						,#{fileType2 , 			jdbcType=VARCHAR}
+						,#{fileName3 , 			jdbcType=VARCHAR}
+						,#{fileType3 , 			jdbcType=VARCHAR}
+						)
+
+		</insert>
+
+
+
+
+
+
+
+
+
+		<!-- 통계 관리 쿼리-->
+
+		<insert id="insert_msg_stats" parameterType="MessageStatsVO">
+				INSERT INTO BR_MSG_STATS
+						(YYYY, MM, DD, MSG_TYPE, SUCC_CNT, SENT_FAIL_CNT, TOUT_FAIL_CNT, INVA_FAIL_CNT, TOTAL_CNT)
+				VALUES
+						(#{yyyy}, #{mm}, #{dd}, #{msgType}, #{succCnt}, #{sentFailCnt}, #{toutFailCnt}, #{invaFailCnt}, #{totalCnt})
+		</insert>
+
+		<update id="update_msg_stats" parameterType="MessageStatsVO">
+			UPDATE BR_MSG_STATS SET
+				SUCC_CNT 			= SUCC_CNT 			+ #{succCnt},
+				SENT_FAIL_CNT = SENT_FAIL_CNT + #{sentFailCnt},
+				TOUT_FAIL_CNT = TOUT_FAIL_CNT + #{toutFailCnt},
+				INVA_FAIL_CNT = INVA_FAIL_CNT + #{invaFailCnt},
+				TOTAL_CNT 		= TOTAL_CNT 		+ #{totalCnt}
+			WHERE	YYYY = #{yyyy} AND MM = #{mm} AND DD = #{dd} AND MSG_TYPE = #{msgType}
+		</update>
+
+
+		<select id="select_msg_stats_year_list" resultType="MessageStatsVO">
+			SELECT
+			  YYYY
+			 ,MSG_TYPE
+			 ,SUM(SUCC_CNT) 				as SUCC_CNT
+			 ,SUM(TOUT_FAIL_CNT) 		as TOUT_FAIL_CNT
+			 ,SUM(INVA_FAIL_CNT) 		as INVA_FAIL_CNT 
+			 ,SUM(SENT_FAIL_CNT) 		as SENT_FAIL_CNT 
+			 ,SUM(TOTAL_CNT)     		as TOTAL_CNT
+			FROM 
+				BR_MSG_STATS
+			<where>
+				<if test='msgType != null and msgType != "" '>
+					MSG_TYPE = #{msgType, jdbcType=VARCHAR}
+				</if>		
+			</where>
+			GROUP BY 
+				YYYY, MSG_TYPE
+			ORDER BY YYYY	
+		</select>
+
+		<select id="select_msg_stats_month_list" parameterType="Map" resultType="MessageStatsVO">
+			SELECT
+			  YYYY
+			 ,MM
+			 ,MSG_TYPE
+			 ,SUM(SUCC_CNT) 				as SUCC_CNT
+			 ,SUM(TOUT_FAIL_CNT) 		as TOUT_FAIL_CNT
+			 ,SUM(INVA_FAIL_CNT) 		as INVA_FAIL_CNT 
+			 ,SUM(SENT_FAIL_CNT) 		as SENT_FAIL_CNT 
+			 ,SUM(TOTAL_CNT)     		as TOTAL_CNT
+			FROM 
+				BR_MSG_STATS
+			<where>
+				YYYY = #{yyyy, jdbcType=VARCHAR}
+				<if test='msgType != null and msgType != "" '>
+					AND MSG_TYPE = #{msgType, jdbcType=VARCHAR}
+				</if>		
+			</where>
+			GROUP BY 
+				YYYY, MM, MSG_TYPE
+			ORDER BY YYYY, MM
+		</select>
+
+		<select id="select_msg_stats_day_list" parameterType="Map" resultType="MessageStatsVO">
+			SELECT
+			  YYYY
+			 ,MM
+			 ,DD
+			 ,MSG_TYPE
+			 ,SUM(SUCC_CNT) 							  as SUCC_CNT
+			 ,SUM(TOUT_FAIL_CNT) 					as TOUT_FAIL_CNT
+			 ,SUM(INVA_FAIL_CNT) 					as INVA_FAIL_CNT 
+			 ,SUM(SENT_FAIL_CNT) 					as SENT_FAIL_CNT 
+			 ,SUM(TOTAL_CNT)								as TOTAL_CNT
+			FROM 
+				BR_MSG_STATS
+			<where>
+				YYYY = #{yyyy, jdbcType=VARCHAR} AND MM = #{mm, jdbcType=VARCHAR}
+				<if test='msgType != null and msgType != "" '>
+					AND MSG_TYPE = #{msgType, jdbcType=VARCHAR}
+				</if>		
+			</where>
+			GROUP BY 
+				YYYY, MM, DD, MSG_TYPE
+			ORDER BY YYYY, MM, DD
+		</select>
+
+</mapper>

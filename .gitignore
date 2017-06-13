@@ -1,0 +1,8 @@
+target/*
+.idea/*
+/dat
+/log
+/out
+/project/*
+
+

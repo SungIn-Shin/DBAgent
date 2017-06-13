@@ -1,0 +1,565 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"NullPointer",
+				"NULLPOINTEREXCEPTION\tJava Class"
+			],
+			[
+				"as",
+				"asInstanceOf"
+			],
+			[
+				"Message",
+				"MessageStatsVO"
+			],
+			[
+				"A",
+				"AgentDBImpl"
+			],
+			[
+				"sysout",
+				"setAlwaysOnTop()\tfunc"
+			],
+			[
+				"pa",
+				"parameterType"
+			],
+			[
+				"FileNotFoun",
+				"FILENOTFOUNDEXCEPTION\tJava Class"
+			],
+			[
+				"String",
+				"STRING\tJava Class"
+			],
+			[
+				"HashM",
+				"I-HashMap\tinit"
+			],
+			[
+				"im",
+				"im\timport"
+			],
+			[
+				"System",
+				"I-FileSystemAlreadyExistsException\tinit"
+			],
+			[
+				"try",
+				"I-EntryPair\tinit"
+			],
+			[
+				"rslt",
+				"rsltCode"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/C++/C++ Single File.sublime-build",
+				"Run"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: In",
+				"Package Control: Install Package"
+			],
+			[
+				"git init",
+				"Git: Init"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: Ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: Pac",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: Add",
+				"Package Control: Add Repository"
+			],
+			[
+				"Package Control: Insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Git/DBAgent2/DBAgent/cfg",
+		"/D/Git/DBAgent2/DBAgent/dat",
+		"/D/Git/DBAgent2/DBAgent/project",
+		"/D/Git/DBAgent2/DBAgent/src",
+		"/D/Git/DBAgent2/DBAgent/src/main",
+		"/D/Git/DBAgent2/DBAgent/src/main/java",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/common",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/excel",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/vo",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/hpr/que",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/hpr/que/bptree",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/hpr/spam",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/hpr/util",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/ssi/util",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/http",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/umgp",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/util"
+	],
+	"file_history":
+	[
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/AgentDBImpl.java",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/App.scala",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/http/HttpServer.scala",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/Validator.java",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/umgp/UmgpModule.scala",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/umgp/UmgpClient.scala",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/DBPolling.scala",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/http/HttpRouteHandler.scala",
+		"/D/Git/DBAgent2/DBAgent/cfg/mybatis-hsqldb-dbagent.xml",
+		"/D/Git/DBAgent2/DBAgent/cfg/mybatis-oracle-dbagent.xml",
+		"/D/Git/DBAgent2/DBAgent/cfg/app.conf",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/excel/ExcelHandler.java",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/Command.scala",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/common/IAgentDBCore.java",
+		"/D/Git/DBAgent2/DBAgent/cfg/mybatis-mysql-dbagent.xml",
+		"/D/Git/DBAgent2/DBAgent/.gitignore",
+		"/D/Git/DBAgent2/DBAgent/dat/excelupload/20170428test 80건.xls",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/DBException.java",
+		"/D/Git/DBAgent2/DBAgent/build.sbt",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/MybatisHandler.java",
+		"/D/Git/DBAgent2/DBAgent/cfg/mybatis-config.xml",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageTodayStatsVO.java",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/common/CommonsVO.java",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/ssi/util/DateFormat.java",
+		"/C/Users/성인/AppData/Roaming/Sublime Text 3/Packages/User/JavaImports.sublime-settings",
+		"/D/Git/DBAgent2/DBAgent/web/node_modules/gulp-jscs/node_modules/jscs/jscs-browser.js",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageTempVO.java",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/Utils.java",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageVO.java",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/hpr/util/Pair.java",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/MsgStatsHandler.java",
+		"/D/Git/DBAgent2/DBAgent/cfg/app.conf.sample",
+		"/D/Git/DBAgent2/DBAgent/README.md",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageJobVO.java",
+		"/D/Git/DBAgent2/DBAgent/log/dbagent.log",
+		"/D/Git/DBAgent2/DBAgent/src/main/scala/com/hopper/dbagent/umgp/Umgp.scala",
+		"/D/Git/DBAgent2/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageStatsVO.java",
+		"/D/Git/DBAgent/DBAgent/cfg/mybatis-oracle-dbagent.xml",
+		"/D/Git/DBAgent/DBAgent/src/main/scala/com/hopper/dbagent/http/HttpRouteHandler.scala",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/AgentDBImpl.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/MsgStatsHandler.java",
+		"/D/Git/DBAgent/DBAgent/src/main/scala/com/hopper/dbagent/DBPolling.scala",
+		"/D/Git/DBAgent/DBAgent/src/main/scala/com/hopper/dbagent/App.scala",
+		"/D/Git/DBAgent/DBAgent/cfg/app.conf",
+		"/D/Git/DBAgent/DBAgent/src/main/scala/com/hopper/dbagent/Command.scala",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/excel/ExcelHandler.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/common/IAgentDBCore.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageStatsVO.java",
+		"/D/Git/DBAgent/DBAgent/.gitignore",
+		"/D/Git/DBAgent/DBAgent/src/main/scala/com/hopper/dbagent/util/Logging.scala",
+		"/D/Git/DBAgent/DBAgent/cfg/logback.xml",
+		"/D/Git/DBAgent/DBAgent/log/dbagent.log",
+		"/D/Git/DBAgent/DBAgent/src/main/java/hpr/util/Serialize.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageFileTempVO.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/hpr/net/email/EmailSender.java",
+		"/D/Git/DBAgent/DBAgent/build.sbt",
+		"/C/Users/성인/Desktop/test/DBAgent/build.sbt",
+		"/D/Git/DBAgent/DBAgent/serviceinstall64.bat",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/Validator.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageVO.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/common/CommonsVO.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/TestMain.java",
+		"/D/Git/DBAgent/DBAgent/README.md",
+		"/C/Users/성인/AppData/Roaming/npm-cache/minimist/1.2.0/package/package.json",
+		"/C/nodejs/node_modules/npm/bin/npm-cli.js",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageTempVO.java",
+		"/D/DBAgent/cfg/mybatis-oracle-dbagent.xml",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/DBException.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/vo/MessageJobVO.java",
+		"/D/Git/DBAgent/DBAgent/cfg/mybatis-hsqldb-dbagent.xml",
+		"/D/Git/DBAgent/DBAgent/cfg/mybatis-config.xml",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/MybatisHandler.java",
+		"/D/Git/DBAgent/DBAgent/web/client/index.html",
+		"/D/DBAgent/cfg/app.conf",
+		"/D/Git/DBAgent/DBAgent/cfg/app.conf.sample",
+		"/D/Git/DBAgent/DBAgent/src/main/java/hpr/db/MybatisHandler.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/Utils.java",
+		"/D/Git/DBAgent/DBAgent/project/plugins.sbt",
+		"/D/Git/DBAgent/DBAgent/project/target/streams/runtime/unmanagedJars/$global/streams/export",
+		"/D/Git/DBAgent/DBAgent/project/target/streams/runtime/unmanagedClasspath/$global/streams/export",
+		"/D/Git/DBAgent/DBAgent/project/target/streams/runtime/managedClasspath/$global/streams/export",
+		"/D/Git/DBAgent/DBAgent/test/src/main/scala/com/hopper/dbagent/http/HttpServer.scala",
+		"/D/Git/DBAgent/DBAgent/project/SampleProject.scala",
+		"/D/Git/DBAgent/DBAgent/project/plugins.scala",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/HSQLTest.java",
+		"/C/Users/성인/Downloads/poi-src-3.15-20160924/poi-3.15/src/java/org/apache/poi/EmptyFileException.java",
+		"/D/Git/DBAgent/DBAgent/inprocessdb/testdb.log",
+		"/D/Git/DBAgent/DBAgent/inprocessdb/testdb.data",
+		"/D/Git/DBAgent/DBAgent/src/main/java/hpr/que/bptree/UniqueDB.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/hpr/exception/DBException.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hopper/dbagent/FileDBHandler.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/hpr/que/bptree/BPlusTree.java",
+		"/D/Git/DBAgent/DBAgent/unique_db5.txt",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/InternetMediaType.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/INioClient.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/que/bptree/BPlusTree.java",
+		"/D/Git/DBAgent/DBAgent/src/main/hpr/que/bptree/BPlusTree.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/INioSession.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/exception/DBException.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/ResultHTTP.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/SessionMap.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/ssl/SSLClient.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/ssl/SSLServer.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/umgp/IUmgpSession.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/umgp/UmgpPacket.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/umgp/UmgpSession.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/AbstractNioSelect.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/INioSelect.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/INioSelectSingle.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/NioBlockClient.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/NioClient.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/NioSelect.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/NioSelectSingle.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/NioServer.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/NioServerSingle.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/NioSession.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/db/MybatisHandler.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/email/EmailSender.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/HttpClient.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/HttpRequest.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/HttpResponse.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/HttpServer.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/HttpsServer.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/IHttpSend.java",
+		"/D/Git/DBAgent/DBAgent/src/main/java/com/hpr/net/http/IHttpServer.java",
+		"/D/Git/DBAgent/DBAgent/src/main/hpr/exception/DBException.java",
+		"/C/Users/성인/Desktop/hpr/hpr/db/MybatisHandler.java",
+		"/D/Git/DBAgent/DBAgent/hsqldb/testdb.log"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"selectMsgJobData",
+			"HttpRouteHandler",
+			"HttpServer",
+			"HttpRouteHandler",
+			"seri",
+			"marshalling",
+			"group",
+			"NioEventLoopGroup",
+			"NioServerSocketChannel",
+			"UmgpClient",
+			"Sender",
+			"getOrElse",
+			"select_msg_job_data",
+			"selectMsgJobDataList",
+			"select_msg_job_data_list",
+			"select_msg_job",
+			"select_job_list",
+			"selectJobList",
+			"routeExcelsJobList",
+			"apiExcelsJobListRE",
+			"selectMsgDataList",
+			"Date()",
+			"properties",
+			"loadProperties",
+			"select_msg_data_list",
+			"selectMsgDataList",
+			"routeMsgsMsgList",
+			"apiMsgsMsgListRE",
+			"===========",
+			"insert",
+			"SUBJECT",
+			"subject",
+			"ExcelHandler",
+			"insert_msg_log",
+			"DECODE",
+			"select_msg_data_list",
+			"RSLT_CODE",
+			"select_msg_data_list_cnt",
+			"status",
+			"where.put(\"rsltCode\"",
+			"select_msg_data_list_cnt",
+			"select_msg_data_list",
+			"selectMsgDataList",
+			"where.put(\"status",
+			"STATUS",
+			"status",
+			"selectMsgDataList",
+			"status",
+			"selectMsgDataList",
+			"status",
+			"selectMsgDataList",
+			"routeMsgsMsgList",
+			"apiMsgsMsgListRE",
+			"/api/msgs",
+			"routeMsgsMsgList",
+			"apiMsgsMsgListRE",
+			"/api/msgs",
+			"select_msg_data_log\nselect_msg_data_log",
+			"select_msg_data_log",
+			"select_msg_log",
+			"excelDataInsert",
+			"selectMsgStatsList",
+			"println",
+			"insert_msg",
+			"ROWNUM",
+			"HEAD",
+			"select_msg_data_list",
+			"select_msg_job",
+			"to_char",
+			"selectMsgDataTodaySuccFailselectMsgDataTodaySuccFail",
+			"selectMsgDataTodaySuccFail",
+			"select_msg_data_today_succ_fail",
+			"DATETIME",
+			"DELETE",
+			"select_msg_data_today_ready",
+			"routeStatsMainList",
+			"apiStatsMainRE",
+			"rslt_code",
+			"select_msg_data_today_succ_fail",
+			"jdbcType=DATETIME",
+			"jdbcType=DATE",
+			"select_msg_data_today_succ_fail",
+			"log.info(s\"[",
+			"MainStats",
+			"StatsMain",
+			"getStats",
+			"routeApiStats",
+			"apiStatsRE",
+			"apiMsgsMsgListRE",
+			"[INPUT]",
+			"[OUTPUT]",
+			"955",
+			"select_msg_data_list",
+			"select_msg_data_today_ready",
+			"selectMsgDataTodaySucc",
+			"select_msg_data_today_fail",
+			"selectList",
+			"selectMsgDataTodaySucc",
+			"db.selectList",
+			"select_msg_data_today_ready",
+			"MessageTodaySats",
+			"MessageTodayStatsVO",
+			"routeMsgStatsList",
+			"selectMsgStatsList",
+			"routeMsgStatsList",
+			"apiStatsListRE",
+			"test",
+			"Map",
+			"selectOne",
+			"select_msg_data_toda",
+			"resultType=\"Map",
+			"resultType=\"M",
+			"Map",
+			"Pair",
+			"select_msg_data",
+			"select_msg_data_",
+			"select_msg_data_log",
+			"log",
+			"5501",
+			"NEXTVAL",
+			"limit",
+			">>>>>>",
+			"select_move_msg",
+			"insert_msg_log",
+			"excelDataIn",
+			"insert_msg_data",
+			"NUMBER",
+			"VARCHAR2"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"TIMESTAMP",
+			"jdbcType=DATE",
+			"jdbcType=DATETIME",
+			"log.debug(s\"[",
+			"INT",
+			"VARCHAR",
+			"YYYYMMDD",
+			"INTEGER",
+			"VARCHAR",
+			"INTEGER"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 283.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Java/JavaC.sublime-build",
+	"project": "dbagent.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 356.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -1,0 +1,27 @@
+<configuration debug="false">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-26(%date{HH:mm:ss.SSS} [%.10thread]) %-5level %4line:%-40.40logger %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>log/dbagent.log</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- daily rollover -->
+        <fileNamePattern>log/backup/dbagent_%d{yyyyMMdd}.log</fileNamePattern>
+
+        <!-- keep 30 days' worth of history -->
+        <maxHistory>30</maxHistory>
+      </rollingPolicy>
+
+      <encoder>
+        <pattern>%-26(%date{HH:mm:ss.SSS} [%.10thread]) %-5level %4line:%-40.40logger %msg%n</pattern>
+      </encoder>
+    </appender>
+
+    <root level="INFO">
+      <appender-ref ref="STDOUT" />
+      <appender-ref ref="FILE" />
+    </root>
+</configuration>

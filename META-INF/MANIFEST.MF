@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Vendor: bridge
+Implementation-Title: Bridge
+Implementation-Version: 1.0-SNAPSHOT
+Implementation-Vendor-Id: bridge
+Specification-Vendor: bridge
+Specification-Title: Bridge
+Specification-Version: 1.0-SNAPSHOT
+Main-Class: com.hopper.dbagent.App

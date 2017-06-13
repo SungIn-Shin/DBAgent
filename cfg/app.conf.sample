@@ -1,0 +1,25 @@
+#Thu Apr 20 15:53:44 KST 2017
+app.log.file=cfg/logback.xml
+app.etc.makeKey=dat/make_key.dat
+app.etc.uniqueDB=dat/uniqueDB.dat
+
+app.db.mybatisConfFile=cfg/mybatis-config.xml
+app.db.standAlone=Y
+app.db.xmlNs=
+app.db.xmlFile=
+app.db.url=
+app.db.name=
+app.db.pwd=
+
+app.ts.ip=
+app.ts.port=
+app.ts.id=
+app.ts.pwd=
+app.ts.useSendLine=Y
+app.ts.useRecvLine=Y
+app.ts.ackTimeoutMilisec=10000
+app.ts.ackWaitCnt=100
+
+app.web.port=8088
+app.web.path=web
+app.web.uploadPath=upload
