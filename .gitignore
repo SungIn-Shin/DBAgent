@@ -3,6 +3,6 @@ target/*
 /dat
 /log
 /out
-/project/*
+/cfg/app.conf
 
 
